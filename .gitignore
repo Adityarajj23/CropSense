@@ -1,0 +1,330 @@
+# ============================================================================
+# ENVIRONMENT & SECRETS
+# ============================================================================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+*.pem
+*.key
+*.cert
+~/.bridge_auth
+.bridge_auth
+
+
+# ============================================================================
+# FRONTEND (Next.js)
+# ============================================================================
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.env.local
+frontend/.env.*.local
+frontend/.vercel
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Next.js cache
+frontend/.next/cache/
+
+# Testing
+frontend/.jest-cache/
+frontend/.vitest-cache/
+
+
+# ============================================================================
+# BACKEND (Python/Flask)
+# ============================================================================
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# pip
+*.txt.lock
+requirements.lock
+
+# Setuptools
+.setuptools_working_set
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Poetry
+poetry.lock
+dist/
+
+# Pipenv
+Pipfile.lock
+
+# pyenv
+.python-version
+
+
+# ============================================================================
+# BACKEND DATA & UPLOADS
+# ============================================================================
+backend/uploads/
+uploads/
+backend/trained_models/*.h5
+backend/trained_models/*.keras
+backend/trained_models/*.pkl
+backend/trained_models/*.joblib
+backend/trained_models/scaler.pkl
+backend/trained_models/__pycache__/
+
+
+# ============================================================================
+# DATABASE
+# ============================================================================
+*.db
+*.sqlite
+*.sqlite3
+mongo_data/
+data/
+.mongorc.js
+
+
+# ============================================================================
+# LOGS
+# ============================================================================
+logs/
+log/
+*.log
+*.log.*
+*.txt.log
+npm-debug.log*
+yarn-debug.log*
+
+
+# ============================================================================
+# IDE & EDITOR
+# ============================================================================
+.vscode/
+.vscode-server/
+.idea/
+.idea_modules/
+*.sublime-workspace
+*.sublime-project
+.DS_Store
+.AppleDouble
+.LSOverride
+*.iml
+*.iws
+*.ipr
+.metals/
+.bloop/
+project/metals.sbt
+
+# Vim
+.vim/
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+.\#*
+*.elc
+
+# Sublime Text
+.subl-workspace
+.subl-project
+
+
+# ============================================================================
+# OS SPECIFIC
+# ============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.AppleDouble
+.LSOverride
+
+
+# ============================================================================
+# DOCKER
+# ============================================================================
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+
+# ============================================================================
+# ARDUINO IDE
+# ============================================================================
+aurdino-setup/arduino_sensor/*.hex
+aurdino-setup/build/
+arudino-setup/.gradle/
+
+
+# ============================================================================
+# TEMPORARY & BUILD FILES
+# ============================================================================
+tmp/
+temp/
+*.tmp
+*.temp
+.tmp/
+.temp/
+*.bak
+*.backup
+*~
+.cache/
+.parcel-cache/
+dist/
+build/
+
+
+# ============================================================================
+# CREDENTIALS & SECURITY
+# ============================================================================
+.credentials
+credentials.json
+secrets.json
+private_key.pem
+public_key.pem
+*.pem
+*.key
+*.cert
+*.crt
+.aws/credentials
+.aws/config
+
+
+# ============================================================================
+# NODE/NPM (if any in root)
+# ============================================================================
+node_modules/
+npm-debug.log
+yarn.lock
+package-lock.json
+
+
+# ============================================================================
+# MISC
+# ============================================================================
+.env.*.local
+.env.local
+.env.*.local
+.venv_backup/
+venv_backup/
+__pycache__
+.pytest_cache
+.mypy_cache
+.coverage
+htmlcov/
+site/
+
+
+# ============================================================================
+# IGNORE NOTHING (explicit tracking)
+# ============================================================================
+# Uncomment to track and commit
+# !backend/trained_models/irrigation_model.keras
+# !backend/trained_models/scaler.pkl
+# !.env.example
+
+# Arduino IDE files
+*.ino.cpp
+*.ino.d
+
+# Serial port logs
+serial_logs/
+*.serial
+
+# MongoDB data
+data/
+db/
+
+# Redis data
+dump.rdb
+
+# Certificates and keys
+*.pem
+*.key
+*.crt
+*.p12
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# ESLint cache
+.eslintcache
+
+# Stylelint cache
+.stylelintcache
+
+# Lock files (keep package-lock.json but ignore yarn.lock if using npm)
+yarn.lock
