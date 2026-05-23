@@ -171,48 +171,9 @@ python serial_bridge.py --port COM3
 
 <div align="center">
 
-```
-┏━━━━━━━━━━━━━━━━━━━━┓
-┃  ARDUINO BOARD     ┃
-┃  • DHT11 Sensor    ┃  Temperature
-┃  • Soil Moisture   ┃  Humidity
-┃  • Every 2 sec     ┃  Moisture
-┗────────────┬───────┘
-             │ USB Serial (9600 baud)
-             │
-┏━━━━━━━━━━━━▼━━━━━━━━━━━━┓
-┃ SERIAL BRIDGE (Python)  ┃
-┃ • Reads Arduino output  ┃
-┃ • Parses sensor data    ┃
-┃ • HTTP POST to backend  ┃
-┗────────────┬────────────┘
-             │ HTTP POST
-             │
-┏━━━━━━━━━━━━▼━━━━━━━━━━━━━┓
-┃  BACKEND API (Flask)      ┃
-┃  • Session management     ┃
-┃  • ML predictions         ┃
-┃  • MongoDB storage        ┃
-┃  • Health scoring         ┃
-┗────┬──────────────────┬───┘
-     │                  │
-┏━━━▼┓            ┏━━━━▼━━━━┓
-┃ DB │            ┃ Uploads │
-┃ M  │            ┃ Local   ┃
-┃ o  │            ┃ FS      ┃
-┃ n  │            ┗━━━━━━━━━┘
-┃ g  │
-┗━━━┛
-     │
-┏━━━▼──────────────────┓
-┃ FRONTEND (Next.js)   ┃ ← http://localhost:3000
-┃ • Live Dashboard     ┃
-┃ • Device Selector    ┃
-┃ • Charts & Trends    ┃
-┃ • Health Scores      ┃
-┃ • Alerts             ┃
-┗──────────────────────┘
-```
+![System Architecture Diagram](assets/system_architecture.png)
+
+**CropSense seamlessly connects hardware sensors to a smart dashboard through a robust backend infrastructure.**
 
 </div>
 
@@ -569,112 +530,13 @@ Response: {
 
 ## 📊 Complete Data Flow Architecture
 
-### End-to-End Data Journey
+<div align="center">
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│ ARDUINO SENSOR (Reads every 2 seconds)                                  │
-│ • DHT11: Temperature & Humidity                                         │
-│ • Soil Moisture: Analog input (0-1023)                                  │
-│ Outputs: [SENSOR] Temp: 28.50°C | Humidity: 65.30% | Soil: 45%       │
-└────────────────────┬────────────────────────────────────────────────────┘
-                     │ USB Serial (9600 baud)
-                     ↓
-┌─────────────────────────────────────────────────────────────────────────┐
-│ SERIAL BRIDGE (Python on your PC)                                       │
-│ Location: aurdino-setup/serial_bridge.py                                │
-│                                                                         │
-│ 1. Parse serial line with regex                                        │
-│ 2. Extract: temp, humidity, soil_moisture                              │
-│ 3. Timestamp the reading                                               │
-│ 4. HTTP POST to backend                                                │
-└────────────────────┬────────────────────────────────────────────────────┘
-                     │ HTTP POST /api/sensors/ingest
-                     │ (No API keys needed!)
-                     ↓
-┌─────────────────────────────────────────────────────────────────────────┐
-│ BACKEND CONTROLLER (Flask)                                              │
-│ Location: backend/app/controllers/sensor_controller.py                  │
-│                                                                         │
-│ 1. Validate JWT token from serial bridge credentials                   │
-│ 2. Validate sensor payload (required fields)                           │
-│ 3. Call sensor_service.ingest_sensor_reading()                         │
-└────────────────────┬────────────────────────────────────────────────────┘
-                     │
-                     ↓
-┌─────────────────────────────────────────────────────────────────────────┐
-│ BACKEND SERVICE - DATA ENRICHMENT                                       │
-│ Location: backend/app/services/sensor_service.py                        │
-│                                                                         │
-│ Input: { device_id, temperature, humidity, soil_moisture, ... }        │
-│                                                                         │
-│ Processing:                                                             │
-│ 1. Look up device from MongoDB (get crop_type, location)               │
-│ 2. Validate values (temp -40 to +80, humidity 0-100, soil 0-100)      │
-│ 3. Call normalize_and_enrich() to compute health scores                │
-│ 4. Check for alerts (temperature too high, soil too dry, etc.)         │
-│ 5. Create document with enriched data                                  │
-│ 6. Store in sensor_readings collection                                 │
-│                                                                         │
-│ Output: {                                                               │
-│   _id: ObjectId(...),                                                  │
-│   device_id: "user_456_WHEAT",                                         │
-│   timestamp: "2026-04-15T10:21:20Z",                                   │
-│   temperature: 28.50,                                                  │
-│   humidity: 65.30,                                                     │
-│   soil_moisture: 45.0,                                                 │
-│   health_score: 92.13,                                                 │
-│   alerts: [],                                                          │
-│   crop_type: "wheat",                                                  │
-│   location: "Field A"                                                  │
-│ }                                                                       │
-└────────┬───────────────────┬────────────────────────────────────────────┘
-         │                   │
-         ↓                   ↓
-    ┌─────────────┐    ┌──────────────────┐
-    │ MONGODB     │    │ ML PREDICTIONS   │
-    │ ────────────│    │ ──────────────    │
-    │ Store all   │    │ 1. Load keras    │
-    │ readings    │    │    model         │
-    │ for later   │    │ 2. Normalize     │
-    │ analytics   │    │    input data    │
-    │             │    │ 3. Predict:      │
-    │ Collections:│    │    - Health      │
-    │ • users     │    │      score       │
-    │ • devices   │    │    - Irrigation  │
-    │ • sessions  │    │      needed?     │
-    │ • readings  │    │ 4. Store result  │
-    │ • predict.. │    │    in DB         │
-    └─────────────┘    └──────────────────┘
-         │                   │
-         └───────────┬───────┘
-                     ↓
-        ┌────────────────────────────┐
-        │ RESPONSE TO SERIAL BRIDGE  │
-        │ ────────────────────────   │
-        │ {                          │
-        │   "success": true,         │
-        │   "health_score": 92.13,   │
-        │   "alerts": [],            │
-        │   "irrigation": 0,         │
-        │   "message": "..."         │
-        │ }                          │
-        └────────────┬───────────────┘
-                     │
-        ┌────────────▼────────────────┐
-        │ FRONTEND DASHBOARD          │
-        │ ────────────────────────    │
-        │ • Displays real-time data   │
-        │ • Shows health score        │
-        │ • Triggers alerts           │
-        │ • Charts & trends           │
-        │ • Recommendations           │
-        │                             │
-        │ Auto-updates via:           │
-        │ • WebSocket (live)          │
-        │ • API polling (fallback)    │
-        └─────────────────────────────┘
-```
+![Data Flow Architecture Diagram](assets/data_flow_architecture.png)
+
+**The complete journey of sensor data from Arduino to your dashboard in real-time.**
+
+</div>
 
 ### Health Score Calculation
 
