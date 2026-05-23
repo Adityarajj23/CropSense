@@ -10,7 +10,7 @@
 [![Node.js](https://img.shields.io/badge/node.js-18%2B-339933?style=flat-square&logo=node.js)]()
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker)]()
 
-[**Quick Start**](#-quick-start--5-minutes) • [**Architecture**](#-system-architecture) • [**API Docs**](#-api-endpoints-reference) • [**Troubleshooting**](#-troubleshooting)
+[**Quick Start**](#-get-started-in-5-minutes) • [**Architecture**](#-system-architecture) • [**Hardware**](#-hardware-setup) • [**Troubleshooting**](#-troubleshooting)
 
 </div>
 
@@ -261,6 +261,11 @@ Soil Moisture Sensor Connections:
 └──────────────┘
 ```
 
+**Interactive 3D Model:**
+
+View the complete hardware setup in 3D using Tinkercad:
+[🔗 CropSense Hardware on Tinkercad](https://www.tinkercad.com/things/lE7gdGxIFpB-assignment?sharecode=VNjDAq8IlB0He1O2NTXDys7m4RLNtvScsxcVnZPSCg8)
+
 ### Step-by-Step Hardware Assembly
 
 1. **Power Down Arduino** - Disconnect USB before wiring
@@ -313,7 +318,7 @@ Soil Moisture Sensor Connections:
 
 ---
 
-## � Data Security & Integrity
+## 🔐 Data Security & Integrity
 
 ### Authentication & Access Control
 
@@ -774,7 +779,7 @@ cropsense/
 
 ---
 
-## � Dashboard & UI Showcase
+## 📊 Dashboard & UI Showcase
 
 Get a glimpse of the CropSense dashboard experience:
 
@@ -788,7 +793,7 @@ Get a glimpse of the CropSense dashboard experience:
 
 ---
 
-## �🛠️ Troubleshooting
+## 🛠️ Troubleshooting
 
 > [!WARNING]
 > Most issues are in these 3 areas: Arduino connection, Backend services, Device selection
